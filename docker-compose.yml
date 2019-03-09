@@ -4,3 +4,6 @@ services:
   hns:
     build: ./balena-hns
     restart: always
+  parity:
+    build: ./balena-parity
+    restart: always
