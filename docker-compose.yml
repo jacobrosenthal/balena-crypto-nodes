@@ -7,3 +7,5 @@ services:
   parity:
     build: ./balena-parity
     restart: always
+    # overkill for /dev/sda
+    privileged: true
