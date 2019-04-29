@@ -4,8 +4,12 @@ services:
   hns:
     build: ./balena-hns
     restart: always
+    ports:
+      - "13037:13037"
   parity:
     build: ./balena-parity
     restart: always
+    ports:
+      - "8545:8545"
     # overkill for /dev/sda
     privileged: true
