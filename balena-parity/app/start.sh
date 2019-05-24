@@ -6,5 +6,5 @@ ARGS=""
 
 mkdir -p /mnt/storage && mount /mnt/storage && \
 	/usr/local/parity --base-path /mnt/storage \
-		--pruning "fast" --pruning-memory 16 --pruning-history 16 --cache-size 32 \
+		--pruning "fast" --pruning-memory 16 --pruning-history 16 \
 		--unsafe-expose --no-download $ARGS
