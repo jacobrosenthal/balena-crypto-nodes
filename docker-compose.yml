@@ -6,6 +6,8 @@ services:
     restart: always
     ports:
       - "13037:13037"
+    # overkill for /dev/sda
+    privileged: true
   parity:
     build: ./balena-parity
     restart: always

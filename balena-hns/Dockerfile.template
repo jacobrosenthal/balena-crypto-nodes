@@ -4,6 +4,8 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:latest-build
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app
 
+RUN echo "LABEL=STORAGE /mnt/storage ext4 rw,noatime,data=ordered 0 2" >> /etc/fstab
+
 RUN install_packages git
 
 RUN git clone https://github.com/handshake-org/hsd.git && \
@@ -12,4 +14,7 @@ RUN git clone https://github.com/handshake-org/hsd.git && \
         npm cache clean --force && \
         rm -rf /tmp/*
 
-CMD ["node", "/usr/src/app/hsd/bin/hsd", "--no-auth", "--log-level=warning"]
+# This will copy all files in our root to the working  directory in the container
+COPY ./app ./
+
+CMD ["bash", "/usr/src/app/start.sh"]
