@@ -15,3 +15,6 @@ services:
       - "8545:8545"
     # overkill for /dev/sda
     privileged: true
+    environment:
+      #not necessary to pass balena vars explicitly, but good for documentation
+      - BALENAENV_PARITY_CORS
