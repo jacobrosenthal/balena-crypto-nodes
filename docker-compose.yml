@@ -1,13 +1,13 @@
 
 version: '2'
 services:
-  hns:
-    build: ./balena-hns
-    restart: always
-    ports:
-      - "13037:13037"
-    # overkill for /dev/sda
-    privileged: true
+  # hns:
+  #   build: ./balena-hns
+  #   restart: always
+  #   ports:
+  #     - "13037:13037"
+  #   # overkill for /dev/sda
+  #   privileged: true
   parity:
     build: ./balena-parity
     restart: always
