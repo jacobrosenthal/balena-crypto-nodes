@@ -6,6 +6,7 @@ services:
     restart: always
     ports:
       - "13037:13037"
+      - "13039:13039"
     # overkill for /dev/sda
     privileged: true
   parity:
