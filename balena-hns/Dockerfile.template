@@ -1,5 +1,7 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:10.15-build
 
+ENV HNS_COMMIT=4cdaa33fa4483b3a6c74761479c90cb96bf9b36f
+
 # Defines our working directory in container
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app
@@ -10,6 +12,7 @@ RUN install_packages git libunbound-dev
 
 RUN git clone https://github.com/handshake-org/hsd.git && \
         cd hsd && \
+        git checkout -q $COMMIT && \
         JOBS=MAX npm install --production --unsafe-perm && \
         npm cache clean --force && \
         rm -rf /tmp/*
