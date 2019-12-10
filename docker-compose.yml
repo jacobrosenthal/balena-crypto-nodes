@@ -1,21 +1,27 @@
 
 version: '2'
 services:
-  hns:
-    build: ./balena-hns
+  # hns:
+  #   build: ./balena-hns
+  #   restart: always
+  #   ports:
+  #     - "13037:13037"
+  #     - "13039:13039"
+  #   privileged: true # overkill for /dev/sda
+  beacon:
+    build: ./balena-lighthouse
     restart: always
-    ports:
-      - "13037:13037"
-      - "13039:13039"
-    # overkill for /dev/sda
-    privileged: true
-  parity:
-    build: ./balena-parity
+    expose: #This is not strictly required when on the same bridge
+      - "5052" #http api
+      - "5053" #ws api
+    privileged: true # overkill for /dev/sda
+  validator:
+    build: ./balena-lighthouse-validator
     restart: always
-    ports:
-      - "8545:8545"
-    # overkill for /dev/sda
-    privileged: true
-    environment:
-      #not necessary to pass balena vars explicitly, but good for documentation
-      - BALENAENV_PARITY_CORS
+    depends_on:
+      - "beacon"
+    privileged: true # overkill for /dev/sda
+  rust:
+    build: ./balena-rust
+    restart: never
+    privileged: true # overkill for /dev/sda
