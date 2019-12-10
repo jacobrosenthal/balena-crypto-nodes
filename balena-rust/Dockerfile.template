@@ -1,0 +1,21 @@
+################################################################################
+# Base image
+################################################################################
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN install_packages build-essential curl file git libudev-dev cmake clang libprotobuf-dev libssl-dev pkg-config
+
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=923479
+# https://github.com/balena-io-library/base-images/issues/562
+RUN c_rehash
+
+ENV PATH=/root/.cargo/bin:$PATH
+
+# Install rustup downloading the version specified by the standard rust-toolchain file
+COPY rust-toolchain .
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain `cat rust-toolchain` -y
+
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
