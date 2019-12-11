@@ -8,6 +8,12 @@ services:
   #     - "13037:13037"
   #     - "13039:13039"
   #   privileged: true # overkill for /dev/sda
+  geth:
+    build: ./balena-geth
+    restart: always
+    ports:
+      - "8545:8545" #rpc api
+    privileged: true # overkill for /dev/sda
   beacon:
     build: ./balena-lighthouse
     restart: always

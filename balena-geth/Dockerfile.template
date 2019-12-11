@@ -1,0 +1,46 @@
+
+
+################################################################################
+# Base image
+################################################################################
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-golang:latest-build AS base
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+ENV GETH_VERSION v1.9.9
+
+################################################################################
+# golang image
+################################################################################
+
+FROM base as golang
+
+RUN install_packages build-essential make gcc musl-dev linux-headers
+
+WORKDIR /build
+
+RUN git clone https://github.com/ethereum/go-ethereum.git && \
+        cd go-ethereum && git checkout $GETH_VERSION
+
+WORKDIR /build/go-ethereum
+
+RUN make geth
+
+################################################################################
+# Final image
+################################################################################
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster
+
+COPY --from=golang /build/go-ethereum/build/bin/geth /usr/local/geth
+
+# Defines our working directory in container
+RUN mkdir -p /usr/src/app/
+WORKDIR /usr/src/app
+
+RUN echo "LABEL=STORAGE /mnt/storage ext4 rw,noatime,data=ordered 0 2" >> /etc/fstab
+
+COPY /app ./
+
+CMD ["bash", "/usr/src/app/start.sh"]
