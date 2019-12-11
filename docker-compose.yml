@@ -25,3 +25,5 @@ services:
     build: ./balena-rust
     restart: never
     privileged: true # overkill for /dev/sda
+    labels:
+      io.balena.features.balena-socket: 'true'
