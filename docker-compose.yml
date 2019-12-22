@@ -22,6 +22,8 @@ services:
       - "60557:60557"
       - "60558:60558"
       - "60559:60559"
+    depends_on:
+      - "geth"
     privileged: true # overkill for /dev/sda
   # beacon:
   #   build: ./balena-lighthouse
