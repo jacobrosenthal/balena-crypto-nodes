@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export VERBOSITY=5
+if [ "$BALENAENV_MESH_LOGS" ]; then export VERBOSITY=$BALENAENV_MESH_LOGS; fi
+
 export DATA_DIR=/mnt/storage/0x_mesh/
 export RPC_ADDR=0.0.0.0:60557
 export P2P_TCP_PORT=60558
