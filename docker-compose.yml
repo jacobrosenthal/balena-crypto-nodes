@@ -15,19 +15,27 @@ services:
       - "8545:8545" #rpc api
       - "8546:8546" #ws api
     privileged: true # overkill for /dev/sda
-  beacon:
-    build: ./balena-lighthouse
+  0x_mesh:
+    build: ./balena-0x_mesh
     restart: always
-    expose: #This is not strictly required when on the same bridge
-      - "5052" #http api
-      - "5053" #ws api
+    ports:
+      - "60557:60557"
+      - "60558:60558"
+      - "60559:60559"
     privileged: true # overkill for /dev/sda
-  validator:
-    build: ./balena-lighthouse-validator
-    restart: always
-    depends_on:
-      - "beacon"
-    privileged: true # overkill for /dev/sda
+  # beacon:
+  #   build: ./balena-lighthouse
+  #   restart: always
+  #   expose: #This is not strictly required when on the same bridge
+  #     - "5052" #http api
+  #     - "5053" #ws api
+  #   privileged: true # overkill for /dev/sda
+  # validator:
+  #   build: ./balena-lighthouse-validator
+  #   restart: always
+  #   depends_on:
+  #     - "beacon"
+  #   privileged: true # overkill for /dev/sda
   rust:
     build: ./balena-rust
     restart: never
