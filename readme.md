@@ -1,6 +1,7 @@
 # balena-crypto-nodes
 
-Just my toy rapsberry pi balena setup for some crypto nodes. Memory really going to be an issue on anything except a pi4 with 4gbs of Ram.... Also requires at least 200gb ssd (at time of writing) with label STORAGE. 
+Just my toy rapsberry pi balena setup for some crypto nodes. Memory really going to be an issue on anything except a pi4 with 4gbs of Ram.... Also requires at least 300gb for a full eth node (at time of writing) USB 3.1 SATA III [UAS or UASP](https://en.wikipedia.org/wiki/USB_Attached_SCSI) or better SSD with label STORAGE.
+To set it up the first time from linux:
 * `apt-get update && apt-get install parted`
 * `lsusb`
 * `parted /dev/sda`
