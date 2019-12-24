@@ -4,44 +4,20 @@
 # Node image
 ################################################################################
 
-FROM balenalib/%%BALENA_MACHINE_NAME%%-node:11-build AS base
+FROM balenalib/%%BALENA_MACHINE_NAME%%-golang:1.12.9 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV MESH_VERSION v7.0.1-beta
-
-ENV GO_VERSION 1.13.4
-
-################################################################################
-# add golang armv7hf from balena
-################################################################################
-
-FROM base as golang
-
-RUN mkdir -p /usr/local/go \
-	&& curl -SLO "http://resin-packages.s3.amazonaws.com/golang/v$GO_VERSION/go$GO_VERSION.linux-armv7hf.tar.gz" \
-	&& echo "bd7e9e6fc83ec77fc3fdbbf2b0d449429b2f9b5aaaac1a7a5b8d152d17981c11  go$GO_VERSION.linux-armv7hf.tar.gz" | sha256sum -c - \
-	&& tar -xzf "go$GO_VERSION.linux-armv7hf.tar.gz" -C /usr/local/go --strip-components=1 \
-	&& rm -f go$GO_VERSION.linux-armv7hf.tar.gz
-
-ENV GOROOT /usr/local/go
-ENV GOPATH /go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
-
-RUN go get -u github.com/golang/dep/cmd/dep
-
-WORKDIR $GOPATH/src/github.com/0xProject
+WORKDIR /build
 
 RUN git clone https://github.com/0xProject/0x-mesh.git && \
-        cd 0x-mesh && git checkout $MESH_VERSION
+        cd 0x-mesh && git checkout development
 
-WORKDIR $GOPATH/src/github.com/0xProject/0x-mesh
+WORKDIR /build/0x-mesh
 
-RUN dep ensure --vendor-only
+RUN go mod vendor
 
-RUN go build -o . ./cmd/mesh
+RUN go build ./cmd/mesh
 
 ################################################################################
 # Final image
@@ -49,7 +25,7 @@ RUN go build -o . ./cmd/mesh
 
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster
 
-COPY --from=golang /go/src/github.com/0xProject/0x-mesh/mesh /usr/local/mesh
+COPY --from=builder /build/0x-mesh/mesh /usr/local/mesh
 
 # Defines our working directory in container
 RUN mkdir -p /usr/src/app/
