@@ -3,13 +3,10 @@
 Just my toy rapsberry pi balena setup for some crypto nodes. Memory really going to be an issue on anything except a pi4 with 4gbs of Ram.... Also requires at least 300gb for a full eth node (at time of writing) USB 3.1 SATA III [UAS or UASP](https://en.wikipedia.org/wiki/USB_Attached_SCSI) or better SSD with label STORAGE.
 To set it up the first time from linux:
 * `apt-get update && apt-get install parted`
-* `lsusb`
-* `parted /dev/sda`
-* `mklabel gpt`
-* `mkpart primary ext4 1MiB 100%`
-* `print`
-* `quit`
-* `mkfs.ext4 /dev/sda1 -L STORAGE`
+* `lsusb` shows sda for me
+* `parted -s --align optimal /dev/sda mklabel gpt mkpart primary ext4 0% 25% mkpart primary ext4 25% 50% mkpart primary ext4 50% 75% mkpart primary ext4 75% 90% mkpart primary ext4 90% 95% mkpart primary ext4 95% 100%`
+* reboot probably?
+* `mkfs.ext4 /dev/sda1 -L STORAGE && mkfs.ext4 /dev/sda2 -L STORAGE && mkfs.ext4 /dev/sda3 -L STORAGE && mkfs.ext4 /dev/sda4 -L STORAGE && mkfs.ext4 /dev/sda5 -L STORAGE && mkfs.ext4 /dev/sda6 -L STORAGE`
 
 To test geth ipc on the geth container, you may want to check `eth.syncing` by opening a terminal to the geth container and typing `/usr/local/geth attach --datadir /mnt/storage/geth`
 
