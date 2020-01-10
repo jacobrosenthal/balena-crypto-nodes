@@ -1,4 +1,4 @@
-FROM jacobrosenthal/balena-lighthouse-ethereum:latest
+FROM jacobrosenthal/balena-lighthouse-ethereum:v0.1.1
 
 # Defines our working directory in container
 RUN mkdir -p /usr/src/app/

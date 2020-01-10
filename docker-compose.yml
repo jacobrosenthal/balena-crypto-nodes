@@ -34,25 +34,27 @@ services:
       - "/dev/sda4:/dev/sda4"
     cap_add:
       - SYS_ADMIN
-  # beacon:
-  #   build: ./balena-lighthouse
-  #   restart: unless-stopped
-  #   ports:
-  #     - "5052" #http api
-  #     - "5053" #ws api
-  #   devices:
-  #     - "/dev/sda2:/dev/sda2"
-  #   cap_add:
-  #     - SYS_ADMIN
-  # validator:
-  #   build: ./balena-lighthouse-validator
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - "beacon"
-  #   devices:
-  #     - "/dev/sda6:/dev/sda6"
-  #   cap_add:
-  #     - SYS_ADMIN
+  beacon:
+    build: ./balena-lighthouse
+    restart: unless-stopped
+    ports:
+      - "5052" #http api
+      - "5053" #ws api
+    depends_on:
+      - "geth"
+    devices:
+      - "/dev/sda2:/dev/sda2"
+    cap_add:
+      - SYS_ADMIN
+  validator:
+    build: ./balena-lighthouse-validator
+    restart: unless-stopped
+    depends_on:
+      - "beacon"
+    devices:
+      - "/dev/sda6:/dev/sda6"
+    cap_add:
+      - SYS_ADMIN
   rust:
     build: ./balena-rust
     restart: unless-stopped
