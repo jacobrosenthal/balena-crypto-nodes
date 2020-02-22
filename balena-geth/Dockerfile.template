@@ -21,7 +21,7 @@ RUN install_packages build-essential make gcc musl-dev linux-headers
 WORKDIR /build
 
 RUN git clone https://github.com/ledgerwatch/turbo-geth.git go-ethereum && \
-        cd go-ethereum && git checkout $GETH_VERSION
+        cd go-ethereum && git checkout $GETH_VERSION && COPY /app/stack.diff ./ && git apply stack.diff 
 
 WORKDIR /build/go-ethereum
 

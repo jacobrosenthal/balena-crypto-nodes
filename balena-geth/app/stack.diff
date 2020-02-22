@@ -1,0 +1,12 @@
+diff --git a/internal/build/util.go b/internal/build/util.go
+index 6fa401111..fd6a2bff5 100644
+--- a/internal/build/util.go
++++ b/internal/build/util.go
+@@ -43,6 +43,7 @@ func MustRun(cmd *exec.Cmd) {
+ 		cmd.Stderr = os.Stderr
+ 		cmd.Stdout = os.Stdout
+ 		if err := cmd.Run(); err != nil {
++			runtime.debug.PrintStack()
+ 			log.Fatal(err)
+ 		}
+ 	}
