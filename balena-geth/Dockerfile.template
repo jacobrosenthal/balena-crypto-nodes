@@ -8,7 +8,7 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-golang:latest-build AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV GETH_VERSION v1.9.9
+ENV GETH_VERSION b541bff1ebdb6fe7df2e071dd15186e3616e12a7
 
 ################################################################################
 # golang image
@@ -20,7 +20,7 @@ RUN install_packages build-essential make gcc musl-dev linux-headers
 
 WORKDIR /build
 
-RUN git clone https://github.com/ethereum/go-ethereum.git && \
+RUN git clone https://github.com/ledgerwatch/turbo-geth.git go-ethereum && \
         cd go-ethereum && git checkout $GETH_VERSION
 
 WORKDIR /build/go-ethereum
